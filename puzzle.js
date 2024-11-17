@@ -89,30 +89,45 @@ const pieces = [
 })
 
 class KangourouKnotPuzzle {
-  constructor(width, height, tileCoordinates) {
-    this.width = width
-    this.height = height
+  constructor(widthOrBoard, height, tileCoordinates) {
+    if (typeof widthOrBoard === 'string') {
+      // Interpret the only parameter as an ASCII representation of the puzzle, e.g.
+      // "XX\nXX" for 2x2 (big) tiles needing to be covered
+      const lines = widthOrBoard.split('\n')
+      this.width = lines.reduce((max, line) => Math.max(max, line.length), 0)
+      this.height = lines.length
+      tileCoordinates = lines.reduce((/** @type Number[][] */ a, line, y) =>
+        line.split('').reduce((a, c, x) => {
+          if (c !== ' ') a.push([x, y])
+          return a
+        }, a), [])
+    } else if (typeof widthOrBoard === 'number') {
+      if (typeof height !== 'number' || tileCoordinates === undefined) throw new Error('Invalid parameters')
+      this.width = widthOrBoard
+      this.height = height
+    } else throw new Error('Invalid parameters')
     this.mask = BigInt(0)
     this.tileCount = 0
     tileCoordinates.forEach(xy => {
       const [x, y] = xy
-      const p = 4 * y * width + 2 * x
+      const p = 4 * y * this.width + 2 * x
       if (this.mask & (1n << BigInt(p))) {
         console.warn(`${x}, ${y} is already set`)
         return
       }
       this.mask |= 1n << BigInt(p)
       this.mask |= 1n << BigInt(p + 1)
-      this.mask |= 1n << BigInt(p + 2 * width)
-      this.mask |= 1n << BigInt(p + 2 * width + 1)
+      this.mask |= 1n << BigInt(p + 2 * this.width)
+      this.mask |= 1n << BigInt(p + 2 * this.width + 1)
       this.tileCount += 4
     })
 
+    /* Depends on the width of the board */
     this.pieces = pieces.map(piece => {
       const rotations = piece.rotations.map(
         rotation => rotation.reduce(
           (s, m, index) =>
-            s | (m << BigInt(2 * index * width)),
+            s | (m << BigInt(2 * index * this.width)),
           0n
         )
       )
@@ -187,6 +202,13 @@ class KangourouKnotPuzzle {
 
 // const p = new KangourouKnotPuzzle(2, 2, [[0, 0], [1, 0], [0, 1], [1, 1]])
 // console.log(p.solve([0, 0, 4, 0, 0]))
-const p = new KangourouKnotPuzzle(4, 4, [[1, 0], [2, 0], [3, 0], [1, 1], [2, 1], [3, 1], [0, 2], [1, 2], [2, 2], [0, 3], [1, 3], [2, 3]])
+// const p = new KangourouKnotPuzzle(4, 4, [[1, 0], [2, 0], [3, 0], [1, 1], [2, 1], [3, 1], [0, 2], [1, 2], [2, 2], [0, 3], [1, 3], [2, 3]])
+// const p = new KangourouKnotPuzzle(' XXX\n XXX\nXXX \nXXX ')
+// const solutions = p.solve([2, 6, 4, 0, 2])
+// const p = new KangourouKnotPuzzle(' XXX\n X X\nXX XX\nXXXXX')
+// const solutions = p.solve([2, 6, 4, 2, 2])
+// const p = new KangourouKnotPuzzle('XXX\nX X\nXXX\nXXX')
+// const solutions = p.solve([1, 4, 3, 2, 2])
+const p = new KangourouKnotPuzzle('XXXXXX\nXXXXXX')
 const solutions = p.solve([2, 6, 4, 0, 2])
 console.log(solutions)
