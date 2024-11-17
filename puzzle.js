@@ -198,6 +198,44 @@ class KangourouKnotPuzzle {
     }
     return false
   }
+
+  /**
+   *
+   * @param {Number[][]} solution
+   * @param {boolean} useColor
+   * @returns {string}
+   */
+  solutionToString(solution, useColor) {
+    const width = this.width
+    const height = this.height
+    const grid = Array.from(
+      { length: 2 * height },
+      () => Array.from({ length: 2 * width }, () => ' ')
+    )
+
+    const labels = '123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    const colors = [
+      '\x1b[42m',   // background green
+      '\x1b[1;34m', // bold blue
+      '\x1b[35m',   // magenta
+      '\x1b[36m',   // cyan
+      '\x1b[1;41m', // background red
+    ]
+    let nr = 0
+    for (const move of solution) {
+      const [x, y, i, j] = move
+      const label = useColor ? `${colors[i]}${labels[nr++]}\x1b[m` : labels[nr++]
+      const row = pieces[i].rotations[j]
+      for (let dy = 0; dy < row.length; dy++) {
+        const mask = row[dy]
+        for (let dx = 0, shift = 1n; shift <= mask; dx++, shift <<= 1n) {
+          if (mask & shift) grid[2 * y + dy][2 * x + dx] = label
+        }
+      }
+    }
+
+    return grid.map(row => row.join('')).join('\n')
+  }
 }
 
 // const p = new KangourouKnotPuzzle(2, 2, [[0, 0], [1, 0], [0, 1], [1, 1]])
@@ -212,3 +250,6 @@ class KangourouKnotPuzzle {
 const p = new KangourouKnotPuzzle('XXXXXX\nXXXXXX')
 const solutions = p.solve([2, 6, 4, 0, 2])
 console.log(solutions)
+for (const s of solutions) {
+  console.log(`Solution:\n${p.solutionToString(s, true)}`)
+}
