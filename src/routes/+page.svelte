@@ -1,46 +1,66 @@
 <script>
-  import { invoke } from "@tauri-apps/api/core";
-
-  let name = $state("");
-  let greetMsg = $state("");
-
-  async function greet(event) {
-    event.preventDefault();
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsg = await invoke("greet", { name });
-  }
+  const S_svg = `data:image/svg+xml;utf8,<svg
+    xmlns:xlink='http://www.w3.org/1999/xlink'
+    xmlns='http://www.w3.org/2000/svg'
+    width='2'
+    height='2'
+    >
+    <style>
+      path.S {
+        fill: none;
+        stroke-linecap: butt;
+        stroke-opacity: 1;
+        paint-order: normal;
+      }
+      path.outline {
+        fill: %23000000;
+        stroke: %23ffffff;
+        stroke-width: 0.1;
+      }
+    </style>
+    <defs>
+      ${Array(5).fill(0).map((_, i) => `
+        <path id='outline${i}' class='outline' d='M 0,8 ${
+          i == 0 ? '0,6 2,4' : (i % 2) === 1 ? '0,0 2,0 4,2' : '0,0 8,0 8,2 6,4'
+        } 4,4 4,6 6,8 8,8 ${
+          i < 3 ? '8,10 6,12 4,12' : '8,16 6,16 4,14'
+        } 4,10 2,8 Z' />
+        <clipPath id='clip${i}'><use xlink:href='%23outline${i}' /></clipPath>
+        <path id='S${i}-path' class='S' d='M ${
+          i == 0 ? '1,5 L' : `${
+            (i % 2) === 1 ? '3,1 C 2,2 0,4' : '7,3 C 3,-1 -1,3'
+          } 3,7 4,8 4,8`
+        } ${i <3 ? '7,11' : '5,9 8,12 6,14 5,15'}' />
+        <g id='S${i}0' clip-path='url(%23clip${i})' transform='scale(0.125)'>
+          <use xlink:href='%23outline${i}' />
+          <use xlink:href='%23S${i}-path' style='stroke:%231500ce;stroke-width:2.5;' />
+          <use xlink:href='%23S${i}-path' style='stroke:%23000000;stroke-width:2;' />
+          <use xlink:href='%23S${i}-path' style='stroke:%2300009d;stroke-width:1.5;' />
+          <use xlink:href='%23outline${i}' style='fill-opacity:0;' />
+        </g>
+        <use id='S${i}1' xlink:href='%23S${i}0' transform='rotate(-90,0.5,0.5)' />
+        <use id='S${i}2' xlink:href='%23S${i}0' transform='rotate(180,0.5,1)' />
+        <use id='S${i}3' xlink:href='%23S${i}0' transform='rotate(90,1,1)' />`).join('')
+      }
+    </defs>
+    <use xlink:href='%23S20' />
+    <use xlink:href='%23S21' transform='translate(0,1)' />
+    <use xlink:href='%23S22' transform='translate(1,0)' />
+    <use xlink:href='%23S23' />
+  </svg>`
 </script>
 
 <main class="container">
-  <h1>Welcome to Tauri + Svelte</h1>
+  <h1>Kangourou Knot Puzzle</h1>
 
-  <div class="row">
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo vite" alt="Vite Logo" />
-    </a>
-    <a href="https://tauri.app" target="_blank">
-      <img src="/tauri.svg" class="logo tauri" alt="Tauri Logo" />
-    </a>
-    <a href="https://kit.svelte.dev" target="_blank">
-      <img src="/svelte.svg" class="logo svelte-kit" alt="SvelteKit Logo" />
-    </a>
-  </div>
-  <p>Click on the Tauri, Vite, and SvelteKit logos to learn more.</p>
-
-  <form class="row" onsubmit={greet}>
-    <input id="greet-input" placeholder="Enter a name..." bind:value={name} />
-    <button type="submit">Greet</button>
-  </form>
-  <p>{greetMsg}</p>
+  <center>
+    <img class="S" src="{S_svg}" alt="S" />
+  </center>
 </main>
 
 <style>
-.logo.vite:hover {
-  filter: drop-shadow(0 0 2em #747bff);
-}
-
-.logo.svelte-kit:hover {
-  filter: drop-shadow(0 0 2em #ff3e00);
+img.S {
+  width: 640px;
 }
 
 :root {
@@ -68,88 +88,14 @@
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: 0.75s;
-}
-
-.logo.tauri:hover {
-  filter: drop-shadow(0 0 2em #24c8db);
-}
-
-.row {
-  display: flex;
-  justify-content: center;
-}
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
-
 h1 {
   text-align: center;
-}
-
-input,
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  color: #0f0f0f;
-  background-color: #ffffff;
-  transition: border-color 0.25s;
-  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-}
-
-button {
-  cursor: pointer;
-}
-
-button:hover {
-  border-color: #396cd8;
-}
-button:active {
-  border-color: #396cd8;
-  background-color: #e8e8e8;
-}
-
-input,
-button {
-  outline: none;
-}
-
-#greet-input {
-  margin-right: 5px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color: #f6f6f6;
     background-color: #2f2f2f;
-  }
-
-  a:hover {
-    color: #24c8db;
-  }
-
-  input,
-  button {
-    color: #ffffff;
-    background-color: #0f0f0f98;
-  }
-  button:active {
-    background-color: #0f0f0f69;
   }
 }
 
