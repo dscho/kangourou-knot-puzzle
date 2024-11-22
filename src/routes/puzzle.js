@@ -88,7 +88,7 @@ const pieces = [
   }
 })
 
-class KangourouKnotPuzzle {
+export class KangourouKnotPuzzle {
   constructor(widthOrBoard, height, tileCoordinates) {
     if (typeof widthOrBoard === 'string') {
       // Interpret the only parameter as an ASCII representation of the puzzle, e.g.
@@ -238,18 +238,20 @@ class KangourouKnotPuzzle {
   }
 }
 
-// const p = new KangourouKnotPuzzle(2, 2, [[0, 0], [1, 0], [0, 1], [1, 1]])
-// console.log(p.solve([0, 0, 4, 0, 0]))
-// const p = new KangourouKnotPuzzle(4, 4, [[1, 0], [2, 0], [3, 0], [1, 1], [2, 1], [3, 1], [0, 2], [1, 2], [2, 2], [0, 3], [1, 3], [2, 3]])
-// const p = new KangourouKnotPuzzle(' XXX\n XXX\nXXX \nXXX ')
-// const solutions = p.solve([2, 6, 4, 0, 2])
-// const p = new KangourouKnotPuzzle(' XXX\n X X\nXX XX\nXXXXX')
-// const solutions = p.solve([2, 6, 4, 2, 2])
-// const p = new KangourouKnotPuzzle('XXX\nX X\nXXX\nXXX')
-// const solutions = p.solve([1, 4, 3, 2, 2])
-const p = new KangourouKnotPuzzle('XXXXXX\nXXXXXX')
-const solutions = p.solve([2, 6, 4, 0, 2])
-console.log(solutions)
-for (const s of solutions) {
-  console.log(`Solution:\n${p.solutionToString(s, true)}`)
+if (typeof process !== 'undefined' && import.meta?.url?.endsWith(process.argv[1].replace(/\\/g, '/'))) {
+  // const p = new KangourouKnotPuzzle(2, 2, [[0, 0], [1, 0], [0, 1], [1, 1]])
+  // console.log(p.solve([0, 0, 4, 0, 0]))
+  // const p = new KangourouKnotPuzzle(4, 4, [[1, 0], [2, 0], [3, 0], [1, 1], [2, 1], [3, 1], [0, 2], [1, 2], [2, 2], [0, 3], [1, 3], [2, 3]])
+  // const p = new KangourouKnotPuzzle(' XXX\n XXX\nXXX \nXXX ')
+  // const solutions = p.solve([2, 6, 4, 0, 2])
+  // const p = new KangourouKnotPuzzle(' XXX\n X X\nXX XX\nXXXXX')
+  // const solutions = p.solve([2, 6, 4, 2, 2])
+  // const p = new KangourouKnotPuzzle('XXX\nX X\nXXX\nXXX')
+  // const solutions = p.solve([1, 4, 3, 2, 2])
+  const p = new KangourouKnotPuzzle('XXXXXX\nXXXXXX')
+  const solutions = p.solve([2, 6, 4, 0, 2])
+  console.log(solutions)
+  for (const s of solutions) {
+    console.log(`Solution:\n${p.solutionToString(s, true)}`)
+  }
 }
