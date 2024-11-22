@@ -1,9 +1,14 @@
 <script>
+  import { KangourouKnotPuzzle } from './puzzle.js';
+
+  const p = new KangourouKnotPuzzle(' XXX\n XXX\nXXX \nXXX ')
+  const solutions = p.solve([2, 6, 4, 0, 2])
+
   const S_svg = `data:image/svg+xml;utf8,<svg
     xmlns:xlink='http://www.w3.org/1999/xlink'
     xmlns='http://www.w3.org/2000/svg'
-    width='2'
-    height='2'
+    width='${p.width}'
+    height='${p.height}'
     >
     <style>
       path.S {
@@ -42,11 +47,8 @@
         <use id='S${i}2' xlink:href='%23S${i}0' transform='rotate(180,0.5,1)' />
         <use id='S${i}3' xlink:href='%23S${i}0' transform='rotate(90,1,1)' />`).join('')
       }
-    </defs>
-    <use xlink:href='%23S20' />
-    <use xlink:href='%23S21' transform='translate(0,1)' />
-    <use xlink:href='%23S22' transform='translate(1,0)' />
-    <use xlink:href='%23S23' />
+    </defs>${solutions[0].map(move => `
+      <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')}
   </svg>`
 </script>
 
