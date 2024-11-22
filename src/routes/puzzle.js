@@ -89,6 +89,12 @@ const pieces = [
 })
 
 export class KangourouKnotPuzzle {
+  /**
+   *
+   * @param {Number|String} widthOrBoard
+   * @param {Number} [height]
+   * @param {Number[][]} [tileCoordinates]
+   */
   constructor(widthOrBoard, height, tileCoordinates) {
     if (typeof widthOrBoard === 'string') {
       // Interpret the only parameter as an ASCII representation of the puzzle, e.g.
@@ -138,12 +144,18 @@ export class KangourouKnotPuzzle {
     })
   }
 
+  /**
+   *
+   * @param {Number[]} pieceCounts
+   * @returns {Number[][][]}
+   */
   solve(pieceCounts) {
     const pieceCountTotal = pieceCounts.reduce((count, pieceCount, index) => count + pieceCount * pieces[index].tileCount, 0)
     if (this.tileCount !== pieceCountTotal) {
       console.warn(`${this.tileCount} tiles need to be covered, but the pieces cover ${pieceCountTotal}`)
-      return false
+      return []
     }
+    /**@type {Number[][][]} */
     const solutions = []
     this.solve0({
       pieceCounts,
@@ -154,6 +166,13 @@ export class KangourouKnotPuzzle {
      return solutions
   }
 
+  /**
+   *
+   * @param {bigint} s
+   * @param {Number} x
+   * @param {Number} y
+   * @returns {boolean}
+   */
   isComplete(s, x, y) {
     const p = 4 * y * this.width + 2 * x
     const mask =
@@ -164,10 +183,30 @@ export class KangourouKnotPuzzle {
     return (s & mask) === mask
   }
 
+  /**
+   * Tests whether the given tile is empty
+   *
+   * @param {Number} x
+   * @param {Number} y
+   * @returns {boolean}
+   */
   isEmpty(x, y) {
     return (this.mask & (1n << BigInt(4 * y * this.width + 2 * x))) === 0n
   }
 
+  /**
+   * Recursive solver
+   *
+   * @param {{
+   *  pieceCounts: Number[],
+   *  s: bigint,
+   *  moves: Number[][],
+   *  solutions: Number[][][]
+   * }} state
+   * @param {Number} x
+   * @param {Number} y
+   * @returns {boolean}
+   */
   solve0(state, x, y) {
     if (x >= this.width) return this.solve0(state, 0, y + 1)
     if (y >= this.height) return true
