@@ -73,13 +73,48 @@
 
   let board = $state(' XXX\n XXX\nXXX \nXXX ')
   let S_svg = $derived(generateSVG(board))
+
+  /**
+   *
+   * @param {Number} coordinateInPixels
+   * @param {Number} dimensionInTiles
+   * @param {Number} dimensionInPixels
+   * @returns Number
+   */
+  function round(coordinateInPixels, dimensionInTiles, dimensionInPixels) {
+    const roundedDown = Math.floor(coordinateInPixels * dimensionInTiles / dimensionInPixels)
+    const diff = coordinateInPixels - roundedDown * dimensionInPixels / dimensionInTiles
+    return diff < 5 || diff > dimensionInPixels / dimensionInTiles - 5 ? -1 : roundedDown
+  }
+
+  /**
+   *
+   * @param {PointerEvent & { currentTarget: EventTarget & HTMLImageElement } } event
+   */
+  function onpointerup(event) {
+    const x = round(
+      event.clientX - event.currentTarget.offsetLeft,
+      board.indexOf('\n'),
+      event.currentTarget.width
+    )
+    const y = round(
+      event.clientY - event.currentTarget.offsetTop,
+      board.split('\n').length,
+      event.currentTarget.height
+    )
+    if (x >= 0 && y >= 0) {
+      const row = board.split('\n')[y]
+      const newRow = row.substring(0, x) + (row[x] === ' ' ? 'X' : ' ') + row.substring(x + 1)
+      board = board.split('\n').map((r, i) => i === y ? newRow : r).join('\n')
+    }
+  }
 </script>
 
 <main class="container">
   <h1>Kangourou Knot Puzzle</h1>
 
   <center>
-    <img class="S" src="{S_svg}" alt="S" />
+    <img class="S" src="{S_svg}" alt="S" {onpointerup} />
   </center>
 </main>
 
