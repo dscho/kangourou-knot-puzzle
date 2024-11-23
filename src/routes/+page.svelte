@@ -71,7 +71,7 @@
     </svg>`
   }
 
-  let board = $state(' XXX\n XXX\nXXX \nXXX ')
+  let board = $state('XX  \nXXXX\n XXX\n XXX')
   let S_svg = $derived(generateSVG(board))
 
   /**
