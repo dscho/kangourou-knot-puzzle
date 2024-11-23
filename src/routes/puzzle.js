@@ -146,15 +146,17 @@ export class KangourouKnotPuzzle {
 
   /**
    *
-   * @param {Number[]} pieceCounts
+   * @param {Number[]} [pieceCounts]
    * @returns {Number[][][]}
    */
   solve(pieceCounts) {
-    const pieceCountTotal = pieceCounts.reduce((count, pieceCount, index) => count + pieceCount * pieces[index].tileCount, 0)
-    if (this.tileCount !== pieceCountTotal) {
-      console.warn(`${this.tileCount} tiles need to be covered, but the pieces cover ${pieceCountTotal}`)
-      return []
-    }
+    if (pieceCounts) {
+      const pieceCountTotal = pieceCounts.reduce((count, pieceCount, index) => count + pieceCount * pieces[index].tileCount, 0)
+      if (this.tileCount !== pieceCountTotal) {
+        console.warn(`${this.tileCount} tiles need to be covered, but the pieces cover ${pieceCountTotal}`)
+        return []
+      }
+    } else pieceCounts = [2, 6, 4, 2, 2]
     /**@type {Number[][][]} */
     const solutions = []
     this.solve0({
@@ -288,7 +290,8 @@ if (typeof process !== 'undefined' && import.meta?.url?.endsWith(process.argv[1]
   // const p = new KangourouKnotPuzzle('XXX\nX X\nXXX\nXXX')
   // const solutions = p.solve([1, 4, 3, 2, 2])
   const p = new KangourouKnotPuzzle('XXXXXX\nXXXXXX')
-  const solutions = p.solve([2, 6, 4, 0, 2])
+  //const solutions = p.solve([2, 6, 4, 0, 2])
+  const solutions = p.solve()
   console.log(solutions)
   for (const s of solutions) {
     console.log(`Solution:\n${p.solutionToString(s, true)}`)
