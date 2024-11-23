@@ -39,8 +39,8 @@
         <g id='S${i}0' clip-path='url(%23clip${i})' transform='scale(0.125)'>
           <use xlink:href='%23outline${i}' />
           <use xlink:href='%23S${i}-path' style='stroke:%231500ce;stroke-width:2.5;' />
-          <use xlink:href='%23S${i}-path' style='stroke:%23000000;stroke-width:2;' />
-          <use xlink:href='%23S${i}-path' style='stroke:%2300009d;stroke-width:1.5;' />
+          <use xlink:href='%23S${i}-path' style='stroke:%23000000;stroke-width:1.5;' />
+          <use xlink:href='%23S${i}-path' style='stroke:%2300009d;stroke-width:1.0;' />
           <use xlink:href='%23outline${i}' style='fill-opacity:0;' />
         </g>
         <use id='S${i}1' xlink:href='%23S${i}0' transform='rotate(-90,0.5,0.5)' />
