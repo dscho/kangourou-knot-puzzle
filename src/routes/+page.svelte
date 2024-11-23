@@ -28,6 +28,11 @@
           stroke: %23ffffff;
           stroke-width: 0.1;
         }
+        path.empty {
+          fill: %237f7f7f;
+          stroke: %23000000;
+          stroke-width: 0.05;
+        }
       </style>
       <defs>
         ${Array(5).fill(0).map((_, i) => `
@@ -53,8 +58,16 @@
           <use id='S${i}2' xlink:href='%23S${i}0' transform='rotate(180,0.5,1)' />
           <use id='S${i}3' xlink:href='%23S${i}0' transform='rotate(90,1,1)' />`).join('')
         }
-      </defs>${solutions[0].map(move => `
-        <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')}
+        <path id='tile' class='empty' d='M 0,0 1,0 1,1 0,1 Z' />
+        <clipPath id='clip-tile'><use xlink:href='%23tile' /></clipPath>
+        <g id='empty' clip-path='url(%23clip-tile)'>
+          <use xlink:href='%23tile' />
+        </g>
+      </defs>${solutions.length > 0
+        ? solutions[0].map(move => `
+        <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')
+        : Array(p.height).fill(0).map((_, y) => Array(p.width).fill(0).map((_, x) => p.isEmpty(x, y) ? '' : `
+        <use xlink:href='%23empty' x='${x}' y='${y}' />`).join('')).join('')}
     </svg>`
   }
 
