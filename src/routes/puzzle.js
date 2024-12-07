@@ -329,11 +329,6 @@ export class KangourouKnotPuzzle {
           fill: %23000000;
           stroke: %23ffffff;
           stroke-width: 0.1;
-        }`}${!options.board ? '' : `
-        path.empty {
-          fill: %237f7f7f;
-          stroke: %23000000;
-          stroke-width: 0.05;
         }`}
       </style>
       <defs>
@@ -359,18 +354,163 @@ export class KangourouKnotPuzzle {
           <use id='S${i}1' xlink:href='%23S${i}0' transform='rotate(-90,0.5,0.5)' />
           <use id='S${i}2' xlink:href='%23S${i}0' transform='rotate(180,0.5,1)' />
           <use id='S${i}3' xlink:href='%23S${i}0' transform='rotate(90,1,1)' />`).join('')
-        }`}${!options.board ? '' : `
-        <path id='tile' class='empty' d='M 0,0 1,0 1,1 0,1 Z' />
-        <clipPath id='clip-tile'><use xlink:href='%23tile' /></clipPath>
-        <g id='empty' clip-path='url(%23clip-tile)'>
-          <use xlink:href='%23tile' />
-        </g>`}
+        }`}
       </defs>${options.solution
         ? options.solution.map(move => `
         <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')
-        : options.board?.split('\n').map((e, y) => e.split('').map((c, x) => c !== 'X' ? '' : `
-        <use xlink:href='%23empty' x='${x}' y='${y}' />`).join('')).join('')}
+        : KangourouKnotPuzzle.boardOutlineAsSVG({
+           width: options.width,
+           height: options.height,
+           grid: true,
+           board: options.board || ''
+        })}
     </svg>`
+  }
+
+  /**
+   * Determines the outline of the indicated board, and returns it in the form of SVG paths
+   *
+   * @param {{
+   *   width: Number,
+   *   height: Number,
+   *   board: string,
+   *   grid?: boolean
+   * }} options
+   * @returns {string}
+   */
+  static boardOutlineAsSVG(options) {
+    /** @type {string[]} */
+    const paths = []
+
+    // These 2d arrays keep track of lines already drawn
+    const horizontal = Array(2 * options.height + 1).fill(0).map(() => Array(options.width).fill(false))
+    const vertical = Array(options.height).fill(0).map(() => Array(2 * options.width + 1).fill(false))
+
+    /*
+     * The board is a 2d array, corresponding to the coordinates of the upper left corner of each tile,
+     * mapping to `true` if there is a tile, `false` if there is none.
+     */
+    const board = options.board.split('\n').map(row => row.split('').map(cell => cell === 'X'))
+    const directions = [{
+      name: 'right', dx: 1, dy: 0, px: 0, py: 0,
+    }, {
+      name: 'down', dx: 0, dy: 1, px: -1, py: 0,
+    }, {
+      name: 'left', dx: -1, dy: 0, px: -1, py: -1,
+    }, {
+      name: 'up', dx: 0, dy: -1, px: 0, py: -1,
+    }]
+
+    /**
+     * Tests whether the given cell is inside the board
+     *
+     * @param {number} x
+     * @param {number} y
+     * @returns {boolean}
+     */
+    const isInside = (x, y) => x >= 0 && x < options.width && y >= 0 && y < options.height && board[y][x]
+    /**
+     * Tests whether going in the given direction would follow the outline of the board
+     *
+     * @param {number} x
+     * @param {number} y
+     * @param {number} direction
+     * @returns {boolean}
+     */
+    const followsOutline = (x, y, direction) =>
+      isInside(
+        x + directions[direction].px,
+        y + directions[direction].py
+      ) && !isInside(
+        x + directions[direction].dx + directions[(direction + 2) % 4].px,
+        y + directions[direction].dy + directions[(direction + 2) % 4].py
+      )
+
+    const lineWidth = 0.02
+    board.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (!cell) return
+
+        if (options.grid) {
+          if (!vertical[y][2 * x + 1]) {
+            let y0 = y + 1
+            while (isInside(x, y0)) vertical[y0++][2 * x + 1] = true
+            paths.push(`<path style="fill: none; stroke: %23000000; stroke-width: ${lineWidth / 2}; stroke-dasharray: ${lineWidth * 1},${lineWidth * 1};" d="M ${x + 0.5},${y} L ${x + 0.5},${y0}" />`)
+          }
+
+          if (!horizontal[2 * y + 1][x]) {
+            let x0 = x + 1
+            while (isInside(x0, y)) horizontal[2 * y + 1][x0++] = true
+            paths.push(`<path style="fill: none; stroke: %23000000; stroke-width: ${lineWidth / 2}; stroke-dasharray: ${lineWidth * 1},${lineWidth * 1};" d="M ${x},${y + 0.5} L ${x0},${y + 0.5}" />`)
+          }
+        }
+
+        if (!vertical[y][2 * x] && !followsOutline(x, y + 1, 3)) {
+          let y0 = y + 1
+          while (isInside(x, y0) && isInside(x - 1, y0)) vertical[y0++][2 * x] = true
+          paths.push(`<path style="fill: none; stroke: %23000000; stroke-width: ${lineWidth / 2};" d="M ${x},${y} L ${x},${y0}" />`)
+        }
+
+        if (!horizontal[2 * y][x]) {
+          // Check for outline
+          if (!followsOutline(x, y, 0)) {
+            // Nope, not an outline.
+            let x0 = x + 1
+            while (isInside(x0, y) && isInside(x0, y - 1)) horizontal[2 * y][x0++] = true
+            paths.push(`<path style="fill: none; stroke: %23000000; stroke-width: ${lineWidth / 2};" d="M ${x},${y} L ${x0},${y}" />`)
+            return
+          }
+
+          // This tile is an upper-left corner, otherwise we would have drawn the line already
+          const path = [`<path style="fill: none; stroke: %23000000; stroke-width: ${lineWidth};" d="M ${x + lineWidth / 2},${y + lineWidth / 2}`]
+          let x0 = x + 1
+          let y0 = y
+          let direction = 0 // start looking right
+          let clockwise = 0
+          // Trace the outline
+          for (;;) {
+            let previousDirection = direction
+            for (;;) {
+              const turnLeft = (direction + 3) % 4
+              if (followsOutline(x0, y0, turnLeft)) {
+                direction = turnLeft
+                clockwise--
+                break
+              }
+              if (!followsOutline(x0, y0, direction)) {
+                direction = (direction + 1) % 4
+                clockwise++
+                break
+              }
+              if (direction === 0) horizontal[2 * y0][x0] = true
+              else if (direction === 1) vertical[y0][2 * x0] = true
+              else if (direction === 2) horizontal[2 * y0][x0 - 1] = true
+              else if (direction === 3) vertical[y0 - 1][2 * x0] = true
+              x0 += directions[direction].dx
+              y0 += directions[direction].dy
+            }
+            if (x0 === x && y0 === y) {
+              if (clockwise < 0) {
+                path[0] = path[0].replace(
+                  `M ${x + lineWidth / 2},${y + lineWidth / 2}`,
+                  `M ${x - lineWidth / 2},${y + lineWidth / 2}`
+                )
+              }
+              path.push(`Z" />`)
+              paths.push(path.join(' '))
+              break
+            }
+            path.push(`L ${
+              x0+(directions[(previousDirection + 1) % 4].dx + directions[(direction + 1) % 4].dx) * lineWidth / 2
+            },${
+              y0+(directions[(previousDirection + 1) % 4].dy + directions[(direction + 1) % 4].dy) * lineWidth / 2
+            }`)
+          }
+        }
+      })
+    })
+
+    return paths.map(e => `    ${e}`).join('\n')
   }
 }
 
