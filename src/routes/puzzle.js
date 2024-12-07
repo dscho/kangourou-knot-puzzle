@@ -97,6 +97,7 @@ export class KangourouKnotPuzzle {
    */
   constructor(widthOrBoard, height, tileCoordinates) {
     if (typeof widthOrBoard === 'string') {
+      this.board = widthOrBoard
       // Interpret the only parameter as an ASCII representation of the puzzle, e.g.
       // "XX\nXX" for 2x2 (big) tiles needing to be covered
       const lines = widthOrBoard.split('\n')
@@ -111,6 +112,12 @@ export class KangourouKnotPuzzle {
       if (typeof height !== 'number' || tileCoordinates === undefined) throw new Error('Invalid parameters')
       this.width = widthOrBoard
       this.height = height
+      this.board = tileCoordinates.reduce((board, xy) => {
+        const [x, y] = xy
+        if (x >= 0 && x < this.width && y >= 0 && y < this.height) board[y][x] = 'X'
+        return board
+      }, Array(height).fill('').map(() => Array(widthOrBoard).fill(' ')))
+      .map(row => row.join('')).join('\n')
     } else throw new Error('Invalid parameters')
     this.mask = BigInt(0)
     this.tileCount = 0
@@ -279,19 +286,17 @@ export class KangourouKnotPuzzle {
   }
 
   /**
+   * Generate an SVG image for the given solution (or gray tiles from the current board)
    *
-   * @param {string} board
+   * @param {Number[][]} solution
    * @returns {string}
    */
-  static generateSVG(board) {
-    const p = new KangourouKnotPuzzle(board)
-    const solutions = p.solve()
-
+  solutionToSVG(solution) {
     return KangourouKnotPuzzle.toSVG({
-      width: p.width,
-      height: p.height,
-      board: solutions.length > 0 ? undefined : board,
-      solution: solutions.length === 0 ? undefined : solutions[0]
+      width: this.width,
+      height: this.height,
+      board: solution ? undefined : this.board,
+      solution: !solution ? undefined : solution
     })
   }
 

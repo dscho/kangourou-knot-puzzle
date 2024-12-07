@@ -2,7 +2,9 @@
   import { KangourouKnotPuzzle } from './puzzle.js';
 
   let board = $state('XX  \nXXXX\n XXX\n XXX')
-  let S_svg = $derived(KangourouKnotPuzzle.generateSVG(board))
+  let puzzle = $derived(new KangourouKnotPuzzle(board))
+  let solutions = $derived(puzzle.solve())
+  let S_svg = $derived(puzzle.solutionToSVG(solutions[0]))
 
   /**
    *
