@@ -1,6 +1,12 @@
-# Tauri + SvelteKit
+# Kangourou Knot Puzzle
 
-This template should help get you started developing with Tauri and SvelteKit in Vite.
+[Kangourou sans Frontières](http://www.aksf.org/history.xhtml) is an association of math lovers. It organizes world-wide math competitions, and [one of the gifts](https://www.kaenguru-schweiz.ch/wettbewerb/preise/knotenpuzzle/) participants may receive is a puzzle that has the following pieces (the numbers below indicates how many of the given shape there are in total):
+
+<img src="./pieces.svg" alt="puzzle pieces" width=80% />
+
+The game comes with a couple of challenges put specific pieces to form a certain shape, like this (using 2, 6, 2, 2 and 2 of the pieces, respectively):
+
+<img src="./example.svg" alt="puzzle pieces" width=80% />
 
 ## Recommended IDE Setup
 
