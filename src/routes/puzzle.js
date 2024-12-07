@@ -287,11 +287,31 @@ export class KangourouKnotPuzzle {
     const p = new KangourouKnotPuzzle(board)
     const solutions = p.solve()
 
+    return KangourouKnotPuzzle.toSVG({
+      width: p.width,
+      height: p.height,
+      board: solutions.length > 0 ? undefined : board,
+      solution: solutions.length === 0 ? undefined : solutions[0]
+    })
+  }
+
+  /**
+   * Generate an SVG image from the given options
+   *
+   * @param {{
+   *   width: Number,
+   *   height: Number,
+   *   board?: string,
+   *   solution?: Number[][]
+   * }} options
+   * @returns {string}
+   */
+  static toSVG(options) {
     return `data:image/svg+xml;utf8,<svg
       xmlns:xlink='http://www.w3.org/1999/xlink'
       xmlns='http://www.w3.org/2000/svg'
-      width='${p.width}'
-      height='${p.height}'
+      width='${options.width}'
+      height='${options.height}'
       >
       <style>
         path.S {
@@ -340,10 +360,10 @@ export class KangourouKnotPuzzle {
         <g id='empty' clip-path='url(%23clip-tile)'>
           <use xlink:href='%23tile' />
         </g>
-      </defs>${solutions.length > 0
-        ? solutions[0].map(move => `
+      </defs>${options.solution
+        ? options.solution.map(move => `
         <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')
-        : Array(p.height).fill(0).map((_, y) => Array(p.width).fill(0).map((_, x) => p.isEmpty(x, y) ? '' : `
+        : options.board?.split('\n').map((e, y) => e.split('').map((c, x) => c !== 'X' ? '' : `
         <use xlink:href='%23empty' x='${x}' y='${y}' />`).join('')).join('')}
     </svg>`
   }
