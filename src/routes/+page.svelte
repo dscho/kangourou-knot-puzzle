@@ -120,10 +120,18 @@ img.S {
 }
 
 .side {
-  position: fixed;
-  top: 10ex;
-  left: 5em;
-  padding: 1em;
+  justify-content: center;
+  position: inherit;
+  display: grid;
+}
+
+@media screen and (min-width: 1300px) {
+  .side {
+    position: fixed;
+    top: 10ex;
+    left: 5em;
+    padding: 1em;
+  }
 }
 
 .side li {
