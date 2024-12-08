@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="2"
+   height="2"
+   version="1.1"
+   id="svg34"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <style
+     id="style1">
+     path.S {
+       fill: none;
+       stroke-linecap: butt;
+       stroke-opacity: 1;
+       paint-order: normal;
+     }
+     path.outline {
+       fill: #000000;
+       stroke: #ffffff;
+       stroke-width: 0.1;
+       }
+  </style>
+  <defs
+     id="defs30">
+    <path
+       id="outline0"
+       class="outline"
+       d="M 0,8 V 6 L 2,4 h 2 v 2 l 2,2 h 2 v 2 L 6,12 H 4 V 10 L 2,8 Z" />
+    <clipPath
+       id="clip0">
+      <use
+         xlink:href="#outline0"
+         id="use1" />
+    </clipPath>
+    <path
+       id="S0-path"
+       class="S"
+       d="m 1,5 6,6" />
+    <g
+       id="S00"
+       clip-path="url(#clip0)"
+       transform="scale(0.125)">
+      <use
+         xlink:href="#outline0"
+         id="use2" />
+      <use
+         xlink:href="#S0-path"
+         style="stroke:#4833ff;stroke-width:2.5"
+         id="use3" />
+      <use
+         xlink:href="#S0-path"
+         style="stroke:#000000;stroke-width:1.5"
+         id="use4" />
+      <use
+         xlink:href="#S0-path"
+         style="stroke:#0000ff;stroke-width:1"
+         id="use5" />
+      <use
+         xlink:href="#outline0"
+         style="fill-opacity:0"
+         id="use6" />
+    </g>
+    <use
+       id="S01"
+       xlink:href="#S00"
+       transform="rotate(-90,0.5,0.5)" />
+    <use
+       id="S02"
+       xlink:href="#S00"
+       transform="rotate(180,0.5,1)" />
+    <use
+       id="S03"
+       xlink:href="#S00"
+       transform="rotate(90,1,1)" />
+    <path
+       id="outline1"
+       class="outline"
+       d="M 0,8 V 0 h 2 l 2,2 v 2 2 l 2,2 h 2 v 2 L 6,12 H 4 V 10 L 2,8 Z" />
+    <clipPath
+       id="clip1">
+      <use
+         xlink:href="#outline1"
+         id="use7" />
+    </clipPath>
+    <path
+       id="S1-path"
+       class="S"
+       d="M 3,1 C 2,2 0,4 3,7 4,8 4,8 7,11" />
+    <g
+       id="S10"
+       clip-path="url(#clip1)"
+       transform="scale(0.125)">
+      <use
+         xlink:href="#outline1"
+         id="use8" />
+      <use
+         xlink:href="#S1-path"
+         style="stroke:#4833ff;stroke-width:2.5"
+         id="use9" />
+      <use
+         xlink:href="#S1-path"
+         style="stroke:#000000;stroke-width:1.5"
+         id="use10" />
+      <use
+         xlink:href="#S1-path"
+         style="stroke:#0000ff;stroke-width:1"
+         id="use11" />
+      <use
+         xlink:href="#outline1"
+         style="fill-opacity:0"
+         id="use12" />
+    </g>
+    <use
+       id="S11"
+       xlink:href="#S10"
+       transform="rotate(-90,0.5,0.5)" />
+    <use
+       id="S12"
+       xlink:href="#S10"
+       transform="rotate(180,0.5,1)" />
+    <use
+       id="S13"
+       xlink:href="#S10"
+       transform="rotate(90,1,1)" />
+    <path
+       id="outline2"
+       class="outline"
+       d="M 0,8 V 0 H 8 V 2 L 6,4 H 4 v 2 l 2,2 h 2 v 2 L 6,12 H 4 V 10 L 2,8 Z" />
+    <clipPath
+       id="clip2">
+      <use
+         xlink:href="#outline2"
+         id="use13" />
+    </clipPath>
+    <path
+       id="S2-path"
+       class="S"
+       d="M 7,3 C 3,-1 -1,3 3,7 4,8 4,8 7,11" />
+    <g
+       id="S20"
+       clip-path="url(#clip2)"
+       transform="scale(0.125)">
+      <use
+         xlink:href="#outline2"
+         id="use14" />
+      <use
+         xlink:href="#S2-path"
+         style="stroke:#4833ff;stroke-width:2.5"
+         id="use15" />
+      <use
+         xlink:href="#S2-path"
+         style="stroke:#000000;stroke-width:1.5"
+         id="use16" />
+      <use
+         xlink:href="#S2-path"
+         style="stroke:#0000ff;stroke-width:1"
+         id="use17" />
+      <use
+         xlink:href="#outline2"
+         style="fill-opacity:0"
+         id="use18" />
+    </g>
+    <use
+       id="S21"
+       xlink:href="#S20"
+       transform="rotate(-90,0.5,0.5)" />
+    <use
+       id="S22"
+       xlink:href="#S20"
+       transform="rotate(180,0.5,1)" />
+    <use
+       id="S23"
+       xlink:href="#S20"
+       transform="rotate(90,1,1)" />
+    <path
+       id="outline3"
+       class="outline"
+       d="M 0,8 V 0 h 2 l 2,2 v 2 2 l 2,2 h 2 v 8 H 6 L 4,14 V 10 L 2,8 Z" />
+    <clipPath
+       id="clip3">
+      <use
+         xlink:href="#outline3"
+         id="use19" />
+    </clipPath>
+    <path
+       id="S3-path"
+       class="S"
+       d="m 3,1 c -1,1 -3,3 0,6 1,1 1,1 2,2 3,3 1,5 0,6" />
+    <g
+       id="S30"
+       clip-path="url(#clip3)"
+       transform="scale(0.125)">
+      <use
+         xlink:href="#outline3"
+         id="use20" />
+      <use
+         xlink:href="#S3-path"
+         style="stroke:#4833ff;stroke-width:2.5"
+         id="use21" />
+      <use
+         xlink:href="#S3-path"
+         style="stroke:#000000;stroke-width:1.5"
+         id="use22" />
+      <use
+         xlink:href="#S3-path"
+         style="stroke:#0000ff;stroke-width:1"
+         id="use23" />
+      <use
+         xlink:href="#outline3"
+         style="fill-opacity:0"
+         id="use24" />
+    </g>
+    <use
+       id="S31"
+       xlink:href="#S30"
+       transform="rotate(-90,0.5,0.5)" />
+    <use
+       id="S32"
+       xlink:href="#S30"
+       transform="rotate(180,0.5,1)" />
+    <use
+       id="S33"
+       xlink:href="#S30"
+       transform="rotate(90,1,1)" />
+    <path
+       id="outline4"
+       class="outline"
+       d="M 0,8 V 0 H 8 V 2 L 6,4 H 4 v 2 l 2,2 h 2 v 8 H 6 L 4,14 V 10 L 2,8 Z" />
+    <clipPath
+       id="clip4">
+      <use
+         xlink:href="#outline4"
+         id="use25" />
+    </clipPath>
+    <path
+       id="S4-path"
+       class="S"
+       d="m 7,3 c -4,-4 -8,0 -4,4 1,1 1,1 2,2 3,3 1,5 0,6" />
+    <g
+       id="S40"
+       clip-path="url(#clip4)"
+       transform="scale(0.125)">
+      <use
+         xlink:href="#outline4"
+         id="use26" />
+      <use
+         xlink:href="#S4-path"
+         style="stroke:#4833ff;stroke-width:2.5"
+         id="use27" />
+      <use
+         xlink:href="#S4-path"
+         style="stroke:#000000;stroke-width:1.5"
+         id="use28" />
+      <use
+         xlink:href="#S4-path"
+         style="stroke:#0000ff;stroke-width:1"
+         id="use29" />
+      <use
+         xlink:href="#outline4"
+         style="fill-opacity:0"
+         id="use30" />
+    </g>
+    <use
+       id="S41"
+       xlink:href="#S40"
+       transform="rotate(-90,0.5,0.5)" />
+    <use
+       id="S42"
+       xlink:href="#S40"
+       transform="rotate(180,0.5,1)" />
+    <use
+       id="S43"
+       xlink:href="#S40"
+       transform="rotate(90,1,1)" />
+  </defs>
+  <use
+     xlink:href="#S20"
+     x="0"
+     y="0"
+     id="use31" />
+  <use
+     xlink:href="#S23"
+     x="0"
+     y="0"
+     id="use32" />
+  <use
+     xlink:href="#S22"
+     x="1"
+     y="0"
+     id="use33" />
+  <use
+     xlink:href="#S21"
+     x="0"
+     y="1"
+     id="use34" />
+</svg>
