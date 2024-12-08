@@ -3,8 +3,20 @@
 
   let board = $state('XX  \nXXXX\n XXX\n XXX')
   let puzzle = $derived(new KangourouKnotPuzzle(board))
-  let solutions = $derived(puzzle.solve())
-  let S_svg = $derived(puzzle.solutionToSVG(solutions[0]))
+  let solutions = $derived(puzzle.solve()
+    .map((solution) => {
+      return {
+        solution,
+        pieceCount: solution.reduce((pieceCount, move) => {
+          pieceCount[move[2]]++
+          return pieceCount
+        }, [0, 0, 0, 0, 0])
+      }
+    })
+    .sort((a, b) => a.pieceCount.join('').localeCompare(b.pieceCount.join('')))
+  )
+  let solutionIndex = $state(0)
+  let S_svg = $derived(puzzle.solutionToSVG(solutions[solutionIndex]?.solution))
 
   /**
    *
@@ -38,6 +50,7 @@
       const row = board.split('\n')[y]
       const newRow = row.substring(0, x) + (row[x] === ' ' ? 'X' : ' ') + row.substring(x + 1)
       board = board.split('\n').map((r, i) => i === y ? newRow : r).join('\n')
+      solutionIndex = 0
     }
   }
 </script>
@@ -49,6 +62,32 @@
     <img class="S" src="{S_svg}" alt="S" {onpointerup} />
   </center>
 </main>
+
+<div class="side">
+  {#if solutions.length === 0}
+    <p>
+      No solutions found.
+    </p>
+  {:else}
+    <p>
+      {solutions.length} solution{#if solutions.length > 1}s{/if} found.
+    </p>
+    <ul>
+      {#each solutions as { pieceCount, solution }, i}
+        {#if i === 0 || solutions[i - 1].pieceCount.join('') !== pieceCount.join('')}
+          <li class="piece-count">
+            <strong>{pieceCount.join('')}</strong>
+          </li>
+        {/if}
+        <li class={i === solutionIndex ? 'selected' : ''}>
+          <button onclick={() => solutionIndex = i}>
+            {i + 1}
+          </button>
+        </li>
+      {/each}
+    </ul>
+  {/if}
+</div>
 
 <style>
 img.S {
@@ -78,6 +117,26 @@ img.S {
   flex-direction: column;
   justify-content: center;
   text-align: center;
+}
+
+.side {
+  position: fixed;
+  top: 10ex;
+  left: 5em;
+  padding: 1em;
+}
+
+.side li {
+  list-style-type: none;
+}
+
+li.piece-count {
+  margin-top: 1em;
+}
+
+li.selected {
+  background-color: #f6f6f6;
+  list-style-type: square;
 }
 
 h1 {
