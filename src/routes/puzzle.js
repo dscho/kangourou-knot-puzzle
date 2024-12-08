@@ -293,6 +293,7 @@ export class KangourouKnotPuzzle {
    */
   solutionToSVG(solution) {
     return KangourouKnotPuzzle.toSVG({
+      asDataURL: true,
       width: this.width,
       height: this.height,
       board: solution ? undefined : this.board,
@@ -304,19 +305,24 @@ export class KangourouKnotPuzzle {
    * Generate an SVG image from the given options
    *
    * @param {{
+   *   asDataURL?: boolean,
    *   width: Number,
    *   height: Number,
    *   board?: string,
-   *   solution?: Number[][]
+   *   solution?: Number[][],
+   *   extraSVG?: string,
+   *   piecesViewport?: boolean
    * }} options
    * @returns {string}
    */
   static toSVG(options) {
-    return `data:image/svg+xml;utf8,<svg
+    return `${options.asDataURL ? 'data:image/svg+xml;utf8,' : ''}<svg
       xmlns:xlink='http://www.w3.org/1999/xlink'
-      xmlns='http://www.w3.org/2000/svg'
-      width='${options.width}'
-      height='${options.height}'
+      xmlns="http://www.w3.org/2000/svg"${options.piecesViewport ? `
+      width="9.4"
+      height="3"` : `
+      width="${options.width}"
+      height="${options.height}"`}
       >
       <style>${!options.solution ? '' : `
         path.S {
@@ -355,15 +361,16 @@ export class KangourouKnotPuzzle {
           <use id='S${i}2' xlink:href='%23S${i}0' transform='rotate(180,0.5,1)' />
           <use id='S${i}3' xlink:href='%23S${i}0' transform='rotate(90,1,1)' />`).join('')
         }`}
-      </defs>${options.solution
-        ? options.solution.map(move => `
+      </defs>${!options.piecesViewport ? '' : `
+        <g transform="translate(-0.8, -0.8)">`}${!options.solution ? '' : options.solution.map(move => `
         <use xlink:href='%23S${move[2]}${move[3]}' x='${move[0]}' y='${move[1]}' />`).join('')
-        : KangourouKnotPuzzle.boardOutlineAsSVG({
+        }${!options.board ? '' : KangourouKnotPuzzle.boardOutlineAsSVG({
            width: options.width,
            height: options.height,
            grid: true,
            board: options.board || ''
-        })}
+        })}${!options.extraSVG ? '' : `
+        ${options.extraSVG}${options.piecesViewport ? '</g>' : ''}`}
     </svg>`
   }
 
@@ -511,6 +518,29 @@ export class KangourouKnotPuzzle {
     })
 
     return paths.map(e => `    ${e}`).join('\n')
+  }
+
+  /**
+   * @param {Object} [extraOptions]
+   * @returns {string}
+   */
+  static piecesToSVG(extraOptions) {
+    return KangourouKnotPuzzle.toSVG({
+      width: 11,
+      height: 4,
+      board: 'XXXXXXXXXXX\nXXXXXXXXXXX\nXXXXXXXXXXX\nXXXXXXXXXXX',
+      solution: [
+        [1, 1, 0, 0],
+        [3, 1, 1, 0],
+        [5, 1, 2, 0],
+        [7, 1, 3, 0],
+        [9, 1, 4, 0],
+      ],
+      piecesViewport: true,
+      extraSVG: [2, 6, 4, 2, 2].map((count, i) => `
+        <text x="${2 * i + 1.3}" y="3.75" style="font-size: 0.75px; font-family: Arial; font-weight: bold; fill=%23000000; stroke-width: 0.03; stroke: %23ffffff">${count}</text>`).join('\n'),
+      ...(extraOptions || {})
+    })
   }
 }
 
