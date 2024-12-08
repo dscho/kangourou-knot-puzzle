@@ -8,6 +8,8 @@ The game comes with a couple of challenges put specific pieces to form a certain
 
 <img src="./example.svg" alt="puzzle pieces" width=80% />
 
+This repository contains code to solve that puzzle. For your convenience, you can also see it live in action on a website: https://dscho.github.io/kangourou-knot-puzzle/.
+
 ## Recommended IDE Setup
 
 [VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer).
